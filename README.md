@@ -12,6 +12,7 @@ Most MCP setup guides stop at "it works". These recipes also cover what an attac
 | [Notion](recipes/notion.md) | Notion pages and databases via `@notionhq/notion-mcp-server` | Read-only integration, page-level sharing, token via env |
 | [Proxmox VE](recipes/proxmox.md) | A Proxmox cluster via an API-token MCP server | `PVEAuditor` token with privilege separation, TLS on, no public 8006 |
 | [Docker MCP gateway](recipes/docker-mcp-gateway.md) | Containerized servers behind Docker's MCP gateway | Server and tool allowlists, `--block-network`, keychain secrets, signed images |
+| [Cloudflare](recipes/cloudflare.md) | Cloudflare zones, DNS and Workers via `@cloudflare/mcp-server-cloudflare` | Scoped token instead of the Global API Key, read-only DNS, expiry and IP filter |
 | [Windows secrets](recipes/windows-secrets.md) | Any server on Claude Desktop for Windows | Launcher script keeps tokens out of `claude_desktop_config.json` |
 
 ## The five rules behind every recipe
