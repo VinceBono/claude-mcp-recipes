@@ -11,6 +11,7 @@ Most MCP setup guides stop at "it works". These recipes also cover what an attac
 | [Obsidian vault](recipes/obsidian-vault.md) | A Markdown vault via the official filesystem server | Pinned package, vault-only root, git as undo |
 | [Notion](recipes/notion.md) | Notion pages and databases via `@notionhq/notion-mcp-server` | Read-only integration, page-level sharing, token via env |
 | [Proxmox VE](recipes/proxmox.md) | A Proxmox cluster via an API-token MCP server | `PVEAuditor` token with privilege separation, TLS on, no public 8006 |
+| [Docker MCP gateway](recipes/docker-mcp-gateway.md) | Containerized servers behind Docker's MCP gateway | Server and tool allowlists, `--block-network`, keychain secrets, signed images |
 | [Windows secrets](recipes/windows-secrets.md) | Any server on Claude Desktop for Windows | Launcher script keeps tokens out of `claude_desktop_config.json` |
 
 ## The five rules behind every recipe
