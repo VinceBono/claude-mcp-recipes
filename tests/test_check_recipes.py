@@ -36,6 +36,14 @@ def test_broad_filesystem_root_fails():
         assert any("too broad" in e for e in check_text(md({"fs": {"command": "npx", "args": args}})))
 
 
+def test_remote_server_rules():
+    ok = {"type": "http", "url": "https://n8n.example.com/mcp/x", "headers": {"Authorization": "Bearer ${N8N_MCP_TOKEN}"}}
+    assert check_text(md({"n8n": ok})) == []
+    assert check_text(md({"dev": {"type": "http", "url": "http://localhost:5678/mcp/x"}})) == []
+    assert any("https" in e for e in check_text(md({"n8n": {**ok, "url": "http://n8n.example.com/mcp/x"}})))
+    assert any("header" in e for e in check_text(md({"n8n": {**ok, "headers": {"Authorization": "Bearer abc123"}}})))
+
+
 def test_invalid_json_fails():
     assert check_text("```json\n{nope\n```")
 

@@ -13,6 +13,7 @@ Most MCP setup guides stop at "it works". These recipes also cover what an attac
 | [Proxmox VE](recipes/proxmox.md) | A Proxmox cluster via an API-token MCP server | `PVEAuditor` token with privilege separation, TLS on, no public 8006 |
 | [Docker MCP gateway](recipes/docker-mcp-gateway.md) | Containerized servers behind Docker's MCP gateway | Server and tool allowlists, `--block-network`, keychain secrets, signed images |
 | [Cloudflare](recipes/cloudflare.md) | Cloudflare zones, DNS and Workers via `@cloudflare/mcp-server-cloudflare` | Scoped token instead of the Global API Key, read-only DNS, expiry and IP filter |
+| [n8n](recipes/n8n.md) | n8n workflows exposed by the MCP Server Trigger node | Bearer auth, HTTPS, VPN-only URL, narrow workflows |
 | [Windows secrets](recipes/windows-secrets.md) | Any server on Claude Desktop for Windows | Launcher script keeps tokens out of `claude_desktop_config.json` |
 
 ## The five rules behind every recipe

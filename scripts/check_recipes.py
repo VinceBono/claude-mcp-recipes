@@ -6,6 +6,7 @@
 Rules (a subset of what mcpscan will enforce):
   pin      npx/uvx packages must carry an exact version (pkg@1.2.3)
   secret   secret-looking env values (TOKEN, KEY, PASSWORD...) must be placeholders (${VAR} or <...>), never literal tokens
+  remote   remote urls must be https; header values must be placeholders
   root     filesystem servers must not be rooted at /, ~ or a bare drive (C:\\)
 """
 
@@ -21,6 +22,8 @@ PLACEHOLDER = re.compile(r"^(\$\{[A-Z0-9_:-]+\}|<[^>]+>)$")
 SECRET_KEY = re.compile(r"TOKEN|SECRET|PASSWORD|PASSWD|API_?KEY|PRIVATE|HEADERS|CREDENTIAL", re.I)
 NON_SECRET = re.compile(r"_(NAME|ID|USER)$", re.I)  # identifiers like PROXMOX_TOKEN_NAME
 PINNED = re.compile(r"^(@[\w.-]+/)?[\w.-]+@\d+\.\d+\.\d+$")
+HAS_PLACEHOLDER = re.compile(r"\$\{[A-Z0-9_:-]+\}|<[^>]+>")
+LOCAL_URL = re.compile(r"^http://(localhost|127\.0\.0\.1)([:/]|$)")
 BAD_ROOTS = {"/", "~", "~/", "%USERPROFILE%"}
 DRIVE_ROOT = re.compile(r"^[A-Za-z]:\\{0,2}$")
 
@@ -38,6 +41,12 @@ def check_server(name: str, s: dict) -> list[str]:
         for r in roots:
             if r in BAD_ROOTS or DRIVE_ROOT.match(r):
                 errs.append(f"{name}: filesystem root {r!r} is too broad")
+    url = str(s.get("url", ""))
+    if url.startswith("http://") and not LOCAL_URL.match(url):
+        errs.append(f"{name}: remote url must use https")
+    for k, v in (s.get("headers") or {}).items():
+        if not HAS_PLACEHOLDER.search(str(v)):
+            errs.append(f"{name}: header {k} looks like a literal secret; use ${{VAR}} or <placeholder>")
     for k, v in (s.get("env") or {}).items():
         if SECRET_KEY.search(k) and not NON_SECRET.search(k) and not PLACEHOLDER.match(str(v)):
             errs.append(f"{name}: env {k} looks like a literal secret; use ${{VAR}} or <placeholder>")
